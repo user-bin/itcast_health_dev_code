@@ -315,6 +315,8 @@
                                 this.imageUrl = this.qiniu_domain_url + serverName +"_itcast";
                                 //上传成功后，把百分比重置为0
                                 this.percent = 0;
+                                //手动给formData绑定img参数
+                                this.formData.img = serverName;
                             }
                         });
                     }).catch((err)=>{
@@ -341,7 +343,28 @@
                       }
                 },
                 //添加
+                /**
+                 * 步骤：
+                 *  1. 发送请求，提交套餐基本数据， 选中的检查组id
+                 *  2. 请求完成后
+                 *      2.1 关闭弹窗
+                 *      2.2 消息提示
+                 *      2.3 重新查询
+                 */
                 handleAdd () {
+                    axios.post(this.backend_url + "/setmeal/add.do?checkgroupIds=" +this.checkgroupIds , this.formData).then((res)=>{
+                        console.log(res);
+                        this.dialogFormVisible = false;
+                        this.$message({
+                            message: res.data.message,
+                            type: res.data.flag ? "success": "error"
+                        });
+                        this.findPage();
+                    }).catch((err)=>{
+                        console.log(err);
+                    });
+
+
                 },
                 //分页查询
                 findPage() {
