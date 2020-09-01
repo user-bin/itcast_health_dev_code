@@ -2,6 +2,7 @@ package com.itheima.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.constant.MessageConst;
+import com.itheima.constant.RedisConst;
 import com.itheima.entity.PageResult;
 import com.itheima.entity.QueryPageBean;
 import com.itheima.entity.Result;
@@ -9,11 +10,12 @@ import com.itheima.pojo.Setmeal;
 import com.itheima.service.SetmealService;
 import com.qiniu.util.Auth;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.management.Query;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 /**
  * @author 黑马程序员
@@ -59,5 +61,20 @@ public class SetmealController {
         PageResult pageResult = setmealService.findPage(queryPageBean);
         log.debug("PageResult:" + pageResult);
         return new Result(true,MessageConst.QUERY_SETMEAL_SUCCESS, pageResult);
+    }
+
+//    注入连接池对象
+    @Autowired
+    JedisPool jedisPool;
+
+    @RequestMapping("/saveImgName")
+    public Result saveImgName(String imgName){
+        log.debug("imgName：" + imgName);
+        //获取 redis的连接对象
+        Jedis jedis = jedisPool.getResource();
+        //操作redis数据库
+        jedis.sadd(RedisConst.SETMEAL_PIC_RESOURCES, imgName);
+        log.debug("添加图片名称到redis成功：" + imgName);
+        return new Result(true,MessageConst.ADD_IMGNAME_REDIS);
     }
 }

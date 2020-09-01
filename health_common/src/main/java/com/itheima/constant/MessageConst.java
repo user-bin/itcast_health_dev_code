@@ -64,4 +64,5 @@ public class MessageConst {
   public static final String GET_SETMEAL_LIST_SUCCESS = "查询套餐列表数据成功";
   public static final String GET_SETMEAL_LIST_FAIL = "查询套餐列表数据失败";
   public static final String GET_QINIU_TOKEN_SUCCESS = "获取七牛云Token成功！！！";
+  public static final String ADD_IMGNAME_REDIS = "在Redis添加图片名称成功！！！";
 }
