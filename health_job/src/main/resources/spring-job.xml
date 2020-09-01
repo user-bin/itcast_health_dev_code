@@ -18,7 +18,7 @@
         <!--注入对象-->
         <property name="targetObject" ref="clearImgJob"/>
         <!--注入方法-->
-        <property name="targetMethod" value="clear"/>
+        <property name="targetMethod" value="clearImageJob"/>
     </bean>
 
 
@@ -31,7 +31,11 @@
             <!-- 每隔10秒执行一次任务 0/10 * * * * ? -->
             <!-- 每隔2分钟执行一次任务  0 0/2 * * * ? -->
             <!-- 每天凌晨2点执行一次任务 0 0 2 * * ?  -->
-            <value>0/10 * * * * ?</value>
+            <value>0/10 * * * * ?</value>   <!--每隔10秒执行一次-->
+            <!--<value>41,42 * * * * ?</value> 每分钟的 41,42 秒执行一次-->
+            <!--<value>41-49 * * * * ?</value> 每分钟的 41到49 秒执行一次-->
+            <!--<value>* * * * * ?</value> &lt;!&ndash;每分钟的 每秒执行一次&ndash;&gt;-->
+
         </property>
     </bean>
 
