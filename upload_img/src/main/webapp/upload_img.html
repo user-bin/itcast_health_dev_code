@@ -32,6 +32,14 @@
 </style>
 <body>
 <div id="app">
+    <!--
+         el-upload: 上传文件的组件
+         class： 样式
+         action： 与表单的action含义一致（服务端上传时需要）
+         show-file-list：是否显示文件列表
+         before-upload： 上传文件前的 回调函数
+    -->
+
     <el-upload
             class="avatar-uploader"
             action=""
@@ -51,7 +59,75 @@
             imageUrl: ""
         },
         methods:{
+            /**
+             * 步骤：
+             *  1. 获取上传凭证
+             *  2. 生成唯一的图片名称
+             *  3. 开始上传
+             *  4. 图片回显
+             *  5. 上传的进度条
+             *  6. 添加水印
+             * @param file
+             */
             beforeAvatarUpload(file){
+                //获取凭证
+                axios.get("/getToken.do").then((res)=>{
+                    var token = res.data.data;
+                    //生成唯一的文件名称
+                    var uuid = this.generateUUID();
+                    //获取文件名
+                    var fileName = file.name;
+                    //截取后缀名
+                    var extendName =  fileName.substr(fileName.lastIndexOf("."));
+                    //七牛云上的文件名
+                    var serverName = uuid + extendName;
+
+                    /**
+                     * file: 要上传的文件对象
+                     * key ：文件名称
+                     * token： 上传凭证
+                     *  config:七牛云配置
+                     */
+
+                    const config = {
+                        useCdnDomain: true, // 是否使用cdn加速
+                        region: qiniu.region.z0  //注册区域
+                    };
+                    //配置本地文件信息
+                    const putExtra = {
+                        fname: "",  //原始文件名
+                        mimeType: "" //文件类型
+                    };
+                    //开始上传
+                    var  observable = qiniu.upload(file , serverName, token, putExtra, config);
+                    observable.subscribe({
+                        next:(res)=>{
+                            //解析上传过程
+                            console.log(res);
+                        },
+                        error:(err)=>{
+                            //上传失败后的回调
+                            console.log(err);
+                            this.$message({
+                                message:"上传失败!!",
+                                type:"error"
+                            });
+                        },
+                        complete:(res)=>{
+                            //上传成功后的回调
+                            this.$message({
+                                message:"上传成功!!",
+                                type:"success"
+                            });
+                        }
+
+                    });
+
+                }).catch((err)=>{
+                    console.log(err);
+                });
+
+
 
             },
             //生成uuid
