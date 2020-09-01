@@ -17,4 +17,16 @@
          (#{param1}, #{param2} )
 
     </insert>
+
+
+    <select id="findByCondition" parameterType="string" resultType="setmeal">
+        select * from t_setmeal
+        <where>
+            <if test="value != null and value.length > 0">
+                code like "%"#{value}"%"
+                or name like "%"#{value}"%"
+                or helpCode like "%"#{value}"%"
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -366,8 +366,26 @@
 
 
                 },
+                _findPage(){
+                    if(this.pagination.queryString != null && this.pagination.queryString.length >0){
+                        this.pagination.currentPage = 1;
+                    }
+                    this.findPage();
+                },
                 //分页查询
                 findPage() {
+                    var param = {
+                        currentPage: this.pagination.currentPage,
+                        pageSize : this.pagination.pageSize,
+                        queryString: this.pagination.queryString
+                    };
+
+                    axios.post(this.backend_url + "/setmeal/findPage.do", param).then((res)=>{
+                        this.dataList = res.data.data.rows;
+                        this.pagination.total = res.data.data.total;
+                    }).catch((err)=>{
+                        console.log(err);
+                    });
                 },
                 // 重置表单
                 resetForm() {
@@ -400,6 +418,8 @@
                 },
                 //切换页码
                 handleCurrentChange(currentPage) {
+                    this.pagination.currentPage = currentPage;
+                    this.findPage();
                 },
                 //生成uuid
                 generateUUID() {

@@ -1,5 +1,7 @@
 package com.itheima.service;
 
+import com.itheima.entity.PageResult;
+import com.itheima.entity.QueryPageBean;
 import com.itheima.pojo.Setmeal; /**
  * @author 黑马程序员
  * @Company http://www.ithiema.com
@@ -7,4 +9,6 @@ import com.itheima.pojo.Setmeal; /**
  */
 public interface SetmealService {
     void add(Setmeal setmeal, Integer[] checkgroupIds);
+
+    PageResult findPage(QueryPageBean queryPageBean);
 }

@@ -2,6 +2,8 @@ package com.itheima.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.constant.MessageConst;
+import com.itheima.entity.PageResult;
+import com.itheima.entity.QueryPageBean;
 import com.itheima.entity.Result;
 import com.itheima.pojo.Setmeal;
 import com.itheima.service.SetmealService;
@@ -10,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.management.Query;
 
 /**
  * @author 黑马程序员
@@ -47,5 +51,13 @@ public class SetmealController {
         setmealService.add(setmeal, checkgroupIds);
         log.debug(MessageConst.ADD_SETMEAL_SUCCESS);
         return new Result(true,MessageConst.ADD_SETMEAL_SUCCESS);
+    }
+
+    @RequestMapping("/findPage")
+    public Result findPage(@RequestBody QueryPageBean queryPageBean){
+        log.debug("queryPageBean:" + queryPageBean);
+        PageResult pageResult = setmealService.findPage(queryPageBean);
+        log.debug("PageResult:" + pageResult);
+        return new Result(true,MessageConst.QUERY_SETMEAL_SUCCESS, pageResult);
     }
 }

@@ -1,7 +1,11 @@
 package com.itheima.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.itheima.dao.SetmealDao;
+import com.itheima.entity.PageResult;
+import com.itheima.entity.QueryPageBean;
 import com.itheima.pojo.Setmeal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +37,16 @@ public class SetmealServiceImpl implements SetmealService {
         if(setmeal.getId() != null){
             setRelation(setmeal.getId(), checkgroupIds);
         }
+    }
+
+    @Override
+    public PageResult findPage(QueryPageBean queryPageBean) {
+        //开始分页
+        PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());
+        //条件查询
+        Page<Setmeal> page = setmealDao.findByCondition(queryPageBean.getQueryString());
+
+        return new PageResult(page.getTotal(), page);
     }
 
     public void setRelation(Integer setmealId, Integer[] checkgroupIds){
