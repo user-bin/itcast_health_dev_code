@@ -43,4 +43,6 @@ public interface CheckGroupDao {
 	void edit(CheckGroup checkGroup);
 
 	void delRelation(Integer id);
+
+    List<CheckGroup> findAll();
 }

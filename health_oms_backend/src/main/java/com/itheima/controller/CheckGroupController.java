@@ -71,4 +71,12 @@ public class CheckGroupController {
         log.debug("检查组修改成功！！！");
         return new Result(true,MessageConst.EDIT_CHECKGROUP_SUCCESS);
     }
+
+    @RequestMapping("/findAll")
+    public Result findAll(){
+        log.debug("findAll");
+        List<CheckGroup> checkGroupList = checkGroupService.findAll();
+        log.debug("checkGroupList:" + checkGroupList);
+        return new Result(true,MessageConst.QUERY_CHECKGROUP_SUCCESS, checkGroupList);
+    }
 }

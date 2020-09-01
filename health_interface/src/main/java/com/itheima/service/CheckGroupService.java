@@ -29,4 +29,6 @@ public interface CheckGroupService {
 	 * @param checkitemIds 检查项选择列表
 	 */
 	public void edit(CheckGroup checkGroup,Integer[] checkitemIds);
+
+    List<CheckGroup> findAll();
 }

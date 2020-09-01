@@ -45,4 +45,8 @@
     <delete id="delRelation" parameterType="int">
         delete from t_checkgroup_checkitem where checkgroup_id = #{id}
     </delete>
+
+    <select id="findAll" resultType="checkgroup">
+        select * from t_checkgroup
+    </select>
 </mapper>

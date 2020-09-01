@@ -88,4 +88,9 @@ public class CheckGroupServiceImpl implements CheckGroupService {
             setRelation(checkGroup.getId(), checkitemIds);
         }
     }
+
+    @Override
+    public List<CheckGroup> findAll() {
+        return checkGroupDao.findAll();
+    }
 }
