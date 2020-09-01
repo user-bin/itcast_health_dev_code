@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="plugins/elementui/index.css">
+<link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
+<script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+<script src="plugins/elementui/index.js"></script>
+<script src="https://unpkg.com/qiniu-js@2.5.4/dist/qiniu.min.js"></script>
+<style>
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
+</style>
+<body>
+<div id="app">
+    <el-upload
+            class="avatar-uploader"
+            action=""
+            :show-file-list="false"
+            :before-upload="beforeAvatarUpload">
+        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    </el-upload>
+</div>
+
+</body>
+<script type="text/javascript" >
+
+    new Vue({
+        el:"#app",
+        data:{
+            imageUrl: ""
+        },
+        methods:{
+            beforeAvatarUpload(file){
+
+            },
+            //生成uuid
+            generateUUID() {
+                var d = new Date().getTime();
+                if (window.performance && typeof window.performance.now === "function") {
+                    d += performance.now(); //use high-precision timer if available
+                }
+                var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                    var r = (d + Math.random() * 16) % 16 | 0;
+                    d = Math.floor(d / 16);
+                    return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                });
+                return uuid;
+            },
+            // 返回 类似 20160102 格式的字符串
+            formatDate: function () {
+                var date = new Date();
+                var y = date.getFullYear();
+                var m = date.getMonth() + 1;
+                if (m < 10) m = "0" + m;
+                var d = date.getDate();
+                if (d < 10) d = "0" + date.getDate();
+                return y + "" + m + "" + d
+            }
+        }
+    });
+
+</script>
+
+</html>
