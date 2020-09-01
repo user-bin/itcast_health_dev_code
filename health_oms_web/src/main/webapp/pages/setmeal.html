@@ -167,7 +167,10 @@
                                                                 :show-file-list="false"
                                                                 :before-upload="beforeAvatarUpload">
                                                             <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                                                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                                            <div v-else>
+                                                                <el-progress v-if="percent" :width="178" type="circle" :percentage="percent"></el-progress>
+                                                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                                            </div>
                                                         </el-upload>
                                                     </el-form-item>
                                                 </el-col>
@@ -224,7 +227,7 @@
             </div>
         </div>
     </body>
-
+    <script src="https://unpkg.com/qiniu-js@2.5.4/dist/qiniu.min.js"></script>
     <script>
         var vue = new Vue({
             el: '#app',
@@ -243,29 +246,99 @@
                 tableData:[],//添加表单窗口中检查组列表数据
                 checkgroupIds:[],//添加表单窗口中检查组复选框对应id
                 dialogFormVisible: false,//控制添加窗口显示/隐藏
-                backend_url: "http://localhost:82"
+                backend_url: "http://localhost:82",
+                qiniu_domain_url: "http://qfyfpe3pm.hd-bkt.clouddn.com/", // 七牛测试域名
+                percent: 0 // 进度值
             },
             created() {
                 this.findPage();
             },
             methods: {
                 //图片类型判断通过后，开始上传图片
+                /***
+                 * 1. 获取token
+                 * 2. 获取唯一的文件名
+                 * 3. 上传图片
+                 * 4. 回显图片
+                 * 5. 进度条
+                 * 6. 水印添加
+                 *
+                 */
                 upload_img(file) {
+                    //二次上传时 ，提前清除图片路径
+                    this.imageUrl = "";
+                    axios.get(this.backend_url + "/setmeal/getToken.do").then((res)=>{
+                        var token = res.data.data;
+                        //获取唯一的文件名
+                        var fileName = file.name;
+                        //截取后缀名  .jpg
+                        var extendName = fileName.substr(fileName.lastIndexOf("."));
+                        //生成uuid
+                        var uuid = this.generateUUID();
+                        //唯一的文件名
+                        var serverName = uuid + extendName;
 
+                        /**
+                         * file: 上传的文件
+                         * key： 唯一的文件名
+                         * token: 上传凭证
+                         * config : 配置七牛云上的参数
+                         * putExtra: 配置原始文件参数
+                         */
+                        const putExtra = {
+                            fname: "",
+                            mimeType: ""
+                        };
+                        const config = {
+                            useCdnDomain: true,
+                            region: qiniu.region.z0
+                        };
+                        //上传图片
+                        var observable = qiniu.upload(file, serverName, token, putExtra, config);
+                        observable.subscribe({
+                            next:(res)=>{
+                                //上传的过程解析
+                                this.percent = Math.floor(res.total.percent);
+                            },
+                            error:(err)=>{
+                                this.$message({
+                                    message: "上传失败！！",
+                                    type:"error"
+                                });
+                            },
+                            complete:(res)=>{
+                                this.$message({
+                                    message: "上传成功！！",
+                                    type:"success"
+                                });
+                                //图片回显
+                                this.imageUrl = this.qiniu_domain_url + serverName +"_itcast";
+                                //上传成功后，把百分比重置为0
+                                this.percent = 0;
+                            }
+                        });
+                    }).catch((err)=>{
+                        console.log(err);
+                    });
                 },
                 //上传图片之前执行
                 beforeAvatarUpload(file) {
-				  const isJPG = file.type === 'image/jpeg';
-				  const isLt2M = file.size / 1024 / 1024 < 2;
-				  if (!isJPG) {
-					this.$message.error('上传套餐图片只能是 JPG 格式!');
-				  }
-				  if (!isLt2M) {
-					this.$message.error('上传套餐图片大小不能超过 2MB!');
-				  }
-				  if(isJPG && isLt2M){
-				      this.upload_img(file);
-                  }
+                      // 如果 file.type 获取不到， 可以修改为根据后缀名判断文件类型
+                      var fileName = file.name;
+                      //截取后缀名  jpg
+                      var extendName = fileName.substr(fileName.lastIndexOf(".") + 1);
+                      const isJPG = extendName === 'jpg' || extendName === 'png' || extendName === 'jpeg'
+                      // const isJPG = file.type === 'image/jpeg';
+                      const isLt2M = file.size / 1024 / 1024 < 2;
+                      if (!isJPG) {
+                        this.$message.error('上传套餐图片只能是 JPG 格式!');
+                      }
+                      if (!isLt2M) {
+                        this.$message.error('上传套餐图片大小不能超过 2MB!');
+                      }
+                      if(isJPG && isLt2M){
+                          this.upload_img(file);
+                      }
                 },
                 //添加
                 handleAdd () {
@@ -283,6 +356,8 @@
                     this.checkgroupIds = [];
                     //滚动条回调顶端
                     // 弹出框中添加 v-if ，控制对话框是否加载
+                    //清除图片地址
+                    this.imageUrl = "";
                 },
                 // 弹出添加窗口
                 /***
@@ -302,6 +377,19 @@
                 },
                 //切换页码
                 handleCurrentChange(currentPage) {
+                },
+                //生成uuid
+                generateUUID() {
+                    var d = new Date().getTime();
+                    if (window.performance && typeof window.performance.now === "function") {
+                        d += performance.now(); //use high-precision timer if available
+                    }
+                    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                        var r = (d + Math.random() * 16) % 16 | 0;
+                        d = Math.floor(d / 16);
+                        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                    });
+                    return uuid;
                 }
             }
         })
