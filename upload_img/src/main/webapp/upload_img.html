@@ -45,9 +45,14 @@
             action=""
             :show-file-list="false"
             :before-upload="beforeAvatarUpload">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-    </el-upload>
+        <!--如果 有图片路径，显示图片 如果没有路径，显示其他-->
+        <img v-if="imageUrl" :src="imageUrl" class="avatar" width="178" height="178">
+        <div v-else>
+            <!--如果有进度值 ，显示进度条  如果进度值为0 ，显示 加号-->
+            <el-progress v-if="percent" type="circle" :width="178" :percentage="percent"></el-progress>
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </div>
+        </el-upload>
 </div>
 
 </body>
@@ -56,7 +61,9 @@
     new Vue({
         el:"#app",
         data:{
-            imageUrl: ""
+            imageUrl: "",
+            domain: "http://qfyfpe3pm.hd-bkt.clouddn.com/",
+            percent: 0
         },
         methods:{
             /**
@@ -70,6 +77,7 @@
              * @param file
              */
             beforeAvatarUpload(file){
+                this.imageUrl = "";
                 //获取凭证
                 axios.get("/getToken.do").then((res)=>{
                     var token = res.data.data;
@@ -88,7 +96,6 @@
                      * token： 上传凭证
                      *  config:七牛云配置
                      */
-
                     const config = {
                         useCdnDomain: true, // 是否使用cdn加速
                         region: qiniu.region.z0  //注册区域
@@ -104,6 +111,7 @@
                         next:(res)=>{
                             //解析上传过程
                             console.log(res);
+                            this.percent = Math.floor(res.total.percent);
                         },
                         error:(err)=>{
                             //上传失败后的回调
@@ -119,6 +127,10 @@
                                 message:"上传成功!!",
                                 type:"success"
                             });
+                            this.percent = 0;
+                           //  3bd90d2c-4e82-42a1-a401-882c88b06a1a2.jpg
+                            //图片回显
+                            this.imageUrl = this.domain + serverName + "_itcast";
                         }
 
                     });
