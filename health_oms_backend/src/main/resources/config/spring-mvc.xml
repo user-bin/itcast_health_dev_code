@@ -27,4 +27,15 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <!--文件上传解析器-->
+    <!--（spring-mvc.xml） 配置文件上传解析器 -->
+    <!-- id的值是固定的-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置上传文件的最大尺寸为5MB -->
+        <property name="maxUploadSize">
+            <value>5242880</value>
+        </property>
+    </bean>
+
 </beans>

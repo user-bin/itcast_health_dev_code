@@ -35,7 +35,18 @@
                     <el-card class="box-card">
                         <div class="boxMain">
                             <el-button style="margin-bottom: 20px;margin-right: 20px" type="primary" @click="downloadTemplate()">模板下载</el-button>
-                            <el-upload action="/ordersetting/upload.do"
+                            <!--
+                               action： form 表单的action
+                                name : form表单的 file组件的name属性
+                                on-success: 上传成功后的回调
+                                before-upload : 上传之前的回调
+
+                                <form action="/ordersetting/upload.do" method="post" enctype="multipart/form-data">
+                                    <input type="file" name="excelFile">
+                                </form>
+                            -->
+
+                            <el-upload :action="backend_url + '/ordersetting/upload.do'"
                                        name="excelFile"
                                        :show-file-list="false"
                                        :on-success="handleSuccess"
@@ -132,7 +143,8 @@
                 currentYear: 1970,
                 currentWeek: 1,
                 days: [],
-                leftobj: []//用于装载页面显示的月份已经进行预约设置的数据
+                leftobj: [],//用于装载页面显示的月份已经进行预约设置的数据
+                backend_url: "http://localhost:82"
             },
             created: function () {//在vue初始化时调用
                 this.initData(null);
@@ -143,6 +155,7 @@
                 },
 				//上传之前进行文件格式校验
                 beforeUpload(file){
+                    //如果file.type 获取不到， 可以通过截取后缀名的方法 判断 文件的类型
                     const isXLS = file.type === 'application/vnd.ms-excel';
                     if(isXLS){
                         return true;
@@ -168,7 +181,6 @@
                     }else{
                         this.$message.error(response.message);
                     }
-                    console.log(response, file, fileList);
                 },
                 //初始化当前页要展示的日期
 				initData: function (cur) {
