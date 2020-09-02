@@ -150,8 +150,49 @@
                 this.initData(null);
             },
             methods: {
+                /**
+                 * /^[0-9]*[1-9][0-9]*$/
+                 * /^ 开头
+                 * $/ 结尾
+                 * * : 重复0次或者n次
+                 * + ： 重复1次或者n次
+                 * ？ ： 0次或者1次
+                 * [0-9]  0-9 任意数字重复一次
+                 *
+                 *
+                 * @param day
+                 */
 				//预约设置
                 handleOrderSet(day){
+                    console.log(day);
+                    this.$prompt('请输入可预约人数', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        inputPattern: /^[0-9]*[1-9][0-9]*$/,
+                        inputErrorMessage: '请输入正整数'
+                    }).then(({ value }) => {
+                        var param = {
+                            orderDate: this.formatDate(day.getFullYear(), day.getMonth() + 1, day.getDate()) ,
+                            number: value
+                        };
+                        axios.post(this.backend_url + "/ordersetting/saveOrEdit.do", param).then((res)=>{
+                            console.log(res);
+                            this.$message({
+                                message:res.data.message,
+                                type: res.data.flag ? "success" :"error"
+                            });
+
+                            //重新查询
+                            this.initData(this.formatDate(this.currentYear , this.currentMonth , 1));
+                        }).catch((err)=>{
+                            console.log(err);
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '取消输入'
+                        });
+                    });
                 },
 				//上传之前进行文件格式校验
                 beforeUpload(file){
