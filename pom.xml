@@ -47,9 +47,20 @@
         <slf4j.version>1.7.25</slf4j.version>
         <!-- 记录日志 -->
         <lombok.version>1.16.8</lombok.version>
+        <poi.version>3.14</poi.version>
     </properties>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
             <!--junit-->
             <dependency>
                 <groupId>junit</groupId>
