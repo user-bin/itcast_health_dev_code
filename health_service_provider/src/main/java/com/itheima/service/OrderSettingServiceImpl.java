@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.itheima.dao.OrderSettingDao;
 import com.itheima.exception.BusinessRuntimeException;
 import com.itheima.pojo.OrderSetting;
+import com.itheima.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +40,20 @@ public class OrderSettingServiceImpl implements OrderSettingService {
                 saveOrEdit(orderSetting);
             }
         }
+    }
+
+    /**
+     *
+     * @param month = 2020-09
+     * @return
+     */
+    @Override
+    public List<OrderSetting> findByMonth(String month) {
+        String thisMonthFirstDay = month + "-01";
+        String thisMonthLastDay =
+                DateUtils.parseDate2Str(DateUtils.getThisMonthLastDayByFirstDay(thisMonthFirstDay));
+
+        return orderSettingDao.findByBetweenDate(thisMonthFirstDay, thisMonthLastDay);
     }
 
     /**

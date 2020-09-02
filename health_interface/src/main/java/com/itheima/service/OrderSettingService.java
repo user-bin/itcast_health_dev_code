@@ -10,4 +10,5 @@ import java.util.List; /**
 public interface OrderSettingService {
     void addOrderSettingList(List<OrderSetting> orderSettingList);
 
+    List<OrderSetting> findByMonth(String month);
 }

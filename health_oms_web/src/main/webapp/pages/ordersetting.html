@@ -189,45 +189,56 @@
                     if (cur) {
                         date = new Date(cur);
                     } else {
-                        var now = new Date();
+                        var now = new Date(); // 创建当前日期
+                        //2020-09-01
                         date = new Date(this.formatDate(now.getFullYear(), now.getMonth() + 1, 1));
                     }
-                    this.currentDay = date.getDate();
-                    this.currentYear = date.getFullYear();
-                    this.currentMonth = date.getMonth() + 1;
-                    this.currentWeek = date.getDay(); // //本月第一天是周几（周日0 周六 6）
+                    this.currentDay = date.getDate(); //1
+                    this.currentYear = date.getFullYear(); // 2020
+                    this.currentMonth = date.getMonth() + 1; // 9
+                    this.currentWeek = date.getDay(); // //本月第一天是周几（周日0 周六 6）  = 2
                     var today = new Date();
-                    this.LocalMonth = today.getMonth() + 1;
+
                     if (this.currentWeek == 0) {
                         this.currentWeek = 7;
                     }
+                    //str = 2020-09-01
                     var str = this.formatDate(this.currentYear, this.currentMonth, this.currentDay);
-                    this.days.length = 0;
+                    //days  是一个数组对象，  存储42天的日期
+                    this.days.length = 0; // 清空数组
                     // 今天是周日，放在第一行第7个位置，前面6个
-                    //初始化本周
+                    //初始化 第一周【1号和1号以前】
                     for (var i = this.currentWeek - 1; i >= 0; i--) {
-                        var d = new Date(str);
-                        d.setDate(d.getDate() - i);
+                        var d = new Date(str);// 2020-09-01
+                        d.setDate(d.getDate() - i); // 2020-09-01
                         var dayobject = {};
-                        dayobject.day = d;
+                        dayobject.day = d; // 2020-09-01
                         this.days.push(dayobject);//将日期放入data 中的days数组 供页面渲染使用
+                        // days = [2020-08-31, 2020-09-01, 2020-09-02, 2020-09-03, ........ 2020-10-11]
                     }
                     //其他周
                     for (var i = 1; i <= 42 - this.currentWeek; i++) {
-                        var d = new Date(str);
-                        d.setDate(d.getDate() + i);
+                        var d = new Date(str); // 2020-09-01
+                        d.setDate(d.getDate() + i); //2020-09-02
                         var dayobject = {};//dayobject
-                        dayobject.day = d;
+                        dayobject.day = d;//2020-09-02
                         this.days.push(dayobject);
                     }
                     
-                    // this.leftobj = [
-                    //     { date: 21, number: 120, reservations: 1 },
-                    //     { date: 13, number: 120, reservations: 1 },
-                    //     { date: 24, number: 120, reservations: 120 },
-                    //     { date: 26, number: 120, reservations: 1 },
-                    //     { date: 28, number: 120, reservations: 1 }
-                    // ];
+                    //this.leftobj = [
+                    //    { date: 21, number: 120, reservations: 1 },
+                    //    { date: 13, number: 120, reservations: 1 },
+                    //    { date: 24, number: 120, reservations: 120 },
+                    //    { date: 26, number: 120, reservations: 1 },
+                    //    { date: 28, number: 120, reservations: 1 }
+                    //];
+                    //发送请求， 查询 当前月的对应预约设置信息， 返回的数据格式，应与 leftobj一致
+                    axios.get(this.backend_url + "/ordersetting/findByMonth.do?month=" + this.currentYear + "-" +this.currentMonth).then((res)=>{
+                        console.log(res);
+                        this.leftobj = res.data.data;
+                    }).catch((err)=>{
+                        console.log(err);
+                    });
                 },
 				//切换到当前月份
                 goCurrentMonth: function (year, month) {

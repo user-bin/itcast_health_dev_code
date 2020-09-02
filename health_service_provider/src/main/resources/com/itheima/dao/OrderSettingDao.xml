@@ -17,4 +17,8 @@
         insert into t_ordersetting
         values(null, #{orderDate}, #{number}, #{reservations})
     </insert>
+
+    <select id="findByBetweenDate" resultType="OrderSetting">
+        select * from t_ordersetting where orderDate between #{param1} and #{param2}
+    </select>
 </mapper>

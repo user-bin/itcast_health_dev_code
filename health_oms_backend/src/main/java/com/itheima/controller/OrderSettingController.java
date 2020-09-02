@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author 黑马程序员
@@ -63,5 +61,37 @@ public class OrderSettingController {
             e.printStackTrace();
             throw  new BusinessRuntimeException(MessageConst.IMPORT_ORDERSETTING_FAIL);
         }
+    }
+
+    /**
+     * [
+     *      {id:1, orderDate: 2020-09-01, number: 500,reservations: 200}，
+     *      {id:2, orderDate: 2020-09-02, number: 500,reservations: 200}，
+     *      {id:3, orderDate: 2020-09-03, number: 500,reservations: 200}
+     * ]
+     *
+     * @param month
+     * @return
+     */
+    @RequestMapping("/findByMonth")
+    public Result findByMonth(String month){
+        log.debug("findByMonth: " + month);
+        List<OrderSetting> orderSettingList = orderSettingService.findByMonth(month);
+        //封装成前端所需要的数据格式
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        for (OrderSetting orderSetting : orderSettingList) {
+            //一个OrderSetting对应一个 Map集合
+            Map<String,Object> map = new HashMap<>();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd");
+            String date = sdf.format(orderSetting.getOrderDate());
+            map.put("date", date);
+            map.put("number", orderSetting.getNumber());
+            map.put("reservations", orderSetting.getReservations());
+
+            mapList.add(map);
+        }
+
+        log.debug("orderSettingList：" + orderSettingList);
+        return new Result(true,MessageConst.GET_ORDERSETTING_SUCCESS, mapList);
     }
 }
