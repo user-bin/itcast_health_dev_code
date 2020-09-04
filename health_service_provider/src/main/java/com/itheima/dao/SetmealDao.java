@@ -4,6 +4,8 @@ import com.github.pagehelper.Page;
 import com.itheima.pojo.Setmeal;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author 黑马程序员
  * @Company http://www.ithiema.com
@@ -15,4 +17,6 @@ public interface SetmealDao {
     void setRelation(@Param("setmeal_id") Integer setmealId,@Param("checkgroup_id") Integer checkgroupId);
 
     Page<Setmeal> findByCondition(String queryString);
+
+    List<Setmeal> findAll();
 }

@@ -25,15 +25,15 @@
             <ul class="list">
                 <li class="list-item" v-for="setmeal in setmealList">
                     <a class="link-page" :href="'setmeal_detail.html?id='+setmeal.id">
-                    <img class="img-object f-left" :src="'http://pqjroc654.bkt.clouddn.com/'+setmeal.img" alt="">
-                    <div class="item-body">
-                        <h4 class="ellipsis item-title">{{setmeal.name}}</h4>
-                        <p class="ellipsis-more item-desc">{{setmeal.remark}}</p>
-                        <p class="item-keywords">
-                            <span>{{setmeal.sex == '0' ? '性别不限' : setmeal.sex == '1' ? '男':'女'}}</span>
-                            <span>{{setmeal.age}}</span>
-                        </p>
-                    </div>
+                        <img class="img-object f-left" :src="qiniu_domain_url+setmeal.img+'_itcast'" alt="">
+                        <div class="item-body">
+                            <h4 class="ellipsis item-title">{{setmeal.name}}</h4>
+                            <p class="ellipsis-more item-desc">{{setmeal.remark}}</p>
+                            <p class="item-keywords">
+                                <span>{{setmeal.sex == '0' ? '性别不限' : setmeal.sex == '1' ? '男':'女'}}</span>
+                                <span>{{setmeal.age}}</span>
+                            </p>
+                        </div>
                     </a>
                 </li>
             </ul>
@@ -48,10 +48,12 @@
     var vue = new Vue({
         el:'#app',
         data:{
-            setmealList:[]
+            setmealList:[],
+            backend_url: "http://localhost:85",
+            qiniu_domain_url: "http://qfyfpe3pm.hd-bkt.clouddn.com/"
         },
         mounted (){
-            axios.post("/setmeal/getSetmeal.do").then((response)=>{
+            axios.post(this.backend_url + "/setmeal/getSetmeal.do").then((response)=>{
                 if(response.data.flag){
                     this.setmealList = response.data.data;
                 }

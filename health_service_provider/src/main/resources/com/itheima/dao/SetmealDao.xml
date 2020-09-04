@@ -20,4 +20,8 @@
             WHERE code LIKE CONCAT('%',#{queryString},'%') or name LIKE CONCAT('%',#{queryString},'%') or helpCode like CONCAT('%',#{queryString},'%')
         </if>
     </select>
+
+    <select id="findAll" resultType="setmeal">
+        select * from t_setmeal
+    </select>
 </mapper>

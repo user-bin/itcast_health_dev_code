@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.JedisPool;
 
+import java.util.List;
+
 /**
  * @author 黑马程序员
  * @Company http://www.ithiema.com
@@ -55,5 +57,10 @@ public class SetmealServiceImpl implements SetmealService {
         PageHelper.startPage(queryPageBean.getCurrentPage(),queryPageBean.getPageSize());
         Page<Setmeal> pageSetmeal = setmealDao.findByCondition(queryPageBean.getQueryString());
         return new PageResult(pageSetmeal.getTotal(),pageSetmeal.getResult());
+    }
+
+    @Override
+    public List<Setmeal> findAll() {
+        return setmealDao.findAll();
     }
 }
