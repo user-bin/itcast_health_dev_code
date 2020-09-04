@@ -15,6 +15,8 @@
         <module>health_oms_backend</module>
         <module>health_oms_web</module>
         <module>health_job</module>
+        <module>health_mobile_backend</module>
+        <module>health_mobile_web</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
