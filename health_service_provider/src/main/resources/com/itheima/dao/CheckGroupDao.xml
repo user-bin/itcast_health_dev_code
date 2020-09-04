@@ -49,4 +49,29 @@
     <select id="findAll" resultType="checkGroup">
         select * from t_checkgroup
     </select>
+
+    <!--映射检查组  ，包括检查项-->
+    <resultMap id="findCheckGroupsBySetmealIdMap" type="checkgroup">
+        <id column="id" property="id"></id>
+        <result column="code" property="code"></result>
+        <result column="name" property="name"></result>
+        <result column="helpCode" property="helpCode"></result>
+        <result column="sex" property="sex"></result>
+        <result column="remark" property="remark"></result>
+        <result column="attention" property="attention"></result>
+        <!-- 映射 checkItems 集合属性-->
+        <!--
+            方法的声明
+                List <CheckItem> com.itheima.dao.CheckItemDao.findCheckItemsByCheckGroupId(Integer checkgroupId)
+        -->
+        <collection
+                property="checkItems"
+                column="id"
+                ofType="checkitem"
+                select="com.itheima.dao.CheckItemDao.findCheckItemsByCheckGroupId"></collection>
+    </resultMap>
+
+    <select id="findCheckGroupsBySetmealId" parameterType="int" resultMap="findCheckGroupsBySetmealIdMap">
+        select * from t_checkgroup where id in (select checkgroup_id from t_setmeal_checkgroup where setmeal_id = #{id})
+    </select>
 </mapper>

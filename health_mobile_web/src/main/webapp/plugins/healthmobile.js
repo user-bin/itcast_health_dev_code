@@ -3,10 +3,16 @@ function getUrlParam(paraName) {
     var url = document.location.toString();
     //alert(url);
     var arrObj = url.split("?");
+    //arrObj[0]=http://localhost/pages/setmeal_detail.html
+    //arrObj[1]= id=3&name=jack
     if (arrObj.length > 1) {
+        //arrPara[0] =  id=3
+        //arrPara[1] =  name=jack
         var arrPara = arrObj[1].split("&");
         var arr;
         for (var i = 0; i < arrPara.length; i++) {
+            //arr[0]=id
+            //arr[1]=3
             arr = arrPara[i].split("=");
             if (arr != null && arr[0] == paraName) {
                 return arr[1];

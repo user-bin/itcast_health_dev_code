@@ -24,4 +24,48 @@
     <select id="findAll" resultType="setmeal">
         select * from t_setmeal
     </select>
+    <!--映射基本字段-->
+    <resultMap id="baseMap" type="setmeal">
+        <!--映射主键  column 列名  property： 属性名 -->
+        <id column="id" property="id"></id>
+        <!--映射其他列-->
+        <result column="name" property="name"></result>
+        <result column="code" property="code"></result>
+        <result column="helpCode" property="helpCode"></result>
+        <result column="sex" property="sex"></result>
+        <result column="age" property="age"></result>
+        <result column="price" property="price"></result>
+        <result column="remark" property="remark"></result>
+        <result column="attention" property="attention"></result>
+        <result column="img" property="img"></result>
+    </resultMap>
+    <!--
+        属性和 列名不一致的情况下 ，使用 resultMap
+        resultMap: 结果映射
+            id: 唯一的标识
+            type: 与select，insert，update，delete标签中的 resultType值一样
+    -->
+    <resultMap id="findDetailsByIdMap" type="setmeal" extends="baseMap">
+        <!--  映射集合属性 <collection property=""-->
+        <!--
+            property: 要映射的属性名
+            column: 映射的列名(作为一个已知条件， 查询 一个 集合对象)
+            ofType: 集合的泛型
+            select： 要执行的方法的 唯一标识（方法的全限定名称）（namespace + id）
+                List<CheckGroup> com.itheima.dao.CheckGroupDao.findCheckGroupsBySetmealId(Integer setmealId)
+        -->
+        <!--  映射 单个对象 <association property=""-->
+        <!--映射 checkGroups 集合属性-->
+        <collection
+                property="checkGroups"
+                column="id"
+                ofType="CheckGroup"
+                select="com.itheima.dao.CheckGroupDao.findCheckGroupsBySetmealId"></collection>
+
+        </resultMap>
+
+
+    <select id="findDetailsById" parameterType="int" resultMap="findDetailsByIdMap">
+        select * from t_setmeal where id = #{id}
+    </select>
 </mapper>

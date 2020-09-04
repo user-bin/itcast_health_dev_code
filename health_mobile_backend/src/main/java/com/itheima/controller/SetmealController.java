@@ -31,4 +31,13 @@ public class SetmealController {
         log.debug("setmealList:" + setmealList);
         return new Result(true, MessageConst.GET_SETMEAL_LIST_SUCCESS, setmealList);
     }
+
+    @RequestMapping("/findDetailsById")
+    public Result findDetailsById(Integer id){
+        log.debug("findDetailsById:" + id);
+        Setmeal setmeal = setmealService.findDetailsById(id);
+        log.debug("setmeal:" + setmeal);
+        return new Result(true,MessageConst.QUERY_SETMEAL_SUCCESS, setmeal);
+    }
+
 }

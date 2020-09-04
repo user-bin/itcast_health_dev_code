@@ -63,4 +63,22 @@ public class SetmealServiceImpl implements SetmealService {
     public List<Setmeal> findAll() {
         return setmealDao.findAll();
     }
+
+    /**
+     * 根据id查询套餐信息(包括套餐的基本信息  ， 套餐对应的检查组 ， 检查组对应的检查项)
+     * 方法一：
+     *      1. 根据id 查询套餐信息
+     *      2. 根据套餐id， 查询到 对应的检查组信息
+     *      3. 循环检查组，根据检查组查询对应的检查项信息
+     *      4. 把检查项添加到检查组中，把检查组添加到套餐中， 返回套餐
+     * 方法二：
+     *      访问dao， 在dao中结果映射【多表关系映射】
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Setmeal findDetailsById(Integer id) {
+        return setmealDao.findDetailsById(id);
+    }
 }
