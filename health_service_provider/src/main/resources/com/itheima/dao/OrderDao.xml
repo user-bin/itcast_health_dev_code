@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.dao.OrderDao">
+    <select id="findByCondition" resultType="long" parameterType="order">
+        select count(0) from t_order
+        where
+            member_id = #{memberId}
+        and orderDate = #{orderDate}
+        and setmeal_id = #{setmealId}
+    </select>
+
+    <insert id="addOrder" parameterType="order" >
+        INSERT INTO `t_order`
+        (`id`, `member_id`, `orderDate`, `orderType`, `orderStatus`, `setmeal_id`)
+        VALUES
+        (null, #{memberId}, #{orderDate}, #{orderType}, #{orderStatus}, #{setmealId})
+    </insert>
+</mapper>
