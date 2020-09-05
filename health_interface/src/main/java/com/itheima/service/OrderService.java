@@ -9,5 +9,7 @@ import java.util.Map; /**
  */
 public interface OrderService {
     Result addOrder(Map<String, String> map);
+
+    Map<String,Object> findById(Integer id);
 }
 

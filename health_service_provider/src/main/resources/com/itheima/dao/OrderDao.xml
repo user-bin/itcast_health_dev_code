@@ -11,10 +11,28 @@
         and setmeal_id = #{setmealId}
     </select>
 
-    <insert id="addOrder" parameterType="order" >
+    <insert id="addOrder" parameterType="order" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO `t_order`
         (`id`, `member_id`, `orderDate`, `orderType`, `orderStatus`, `setmeal_id`)
         VALUES
         (null, #{memberId}, #{orderDate}, #{orderType}, #{orderStatus}, #{setmealId})
     </insert>
+
+    <!--
+        select o.orderDate,o.orderType, m.name, s.name
+from t_order o, t_member m , t_setmeal s
+where o.id = 81 and o.member_id = m.id and o.setmeal_id = s.id
+
+
+select o.orderDate, o.orderType,
+(select name from t_setmeal s where s.id = o.setmeal_id ),
+(select name from t_member m where m.id = o.member_id )
+from t_order o
+where id = 81
+    -->
+    <select id="findById" parameterType="int" resultType="map">
+        select o.orderDate,o.orderType, m.name member, s.name setmeal
+        from t_order o, t_member m , t_setmeal s
+        where o.id = #{id} and o.member_id = m.id and o.setmeal_id = s.id
+    </select>
 </mapper>

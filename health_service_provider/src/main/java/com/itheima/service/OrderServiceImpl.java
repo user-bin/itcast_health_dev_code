@@ -11,7 +11,9 @@ import com.itheima.pojo.Order;
 import com.itheima.pojo.OrderSetting;
 import com.itheima.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -21,6 +23,7 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
 
@@ -122,6 +125,18 @@ public class OrderServiceImpl implements OrderService {
         orderSetting.setReservations(orderSetting.getReservations() + 1);
         orderSettingDao.editReservationsByOrderDate(orderSetting);
 
-        return new Result(true, MessageConst.ORDER_SUCCESS);
+        return new Result(true, MessageConst.ORDER_SUCCESS, order );
+    }
+
+    @Override
+    public Map<String, Object> findById(Integer id) {
+        Map<String,Object> map = orderDao.findById(id);
+        //先获取预约日期
+        Date orderDate = (Date) map.get("orderDate");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String orderDateStr = sdf.format(orderDate);
+        //把原来的日期类型覆盖为 字符串类型
+        map.put("orderDate", orderDateStr);
+        return map;
     }
 }

@@ -63,10 +63,11 @@
         var vue = new Vue({
             el:'#app',
             data:{
-                orderInfo:{}
+                orderInfo:{},
+                backend_url: "http://localhost:85"
             },
             mounted(){
-                axios.post("/order/findById.do?id=" + id).then((response) => {
+                axios.post(this.backend_url + "/order/findById.do?id=" + id).then((response) => {
                     this.orderInfo = response.data.data;
                 });
             }

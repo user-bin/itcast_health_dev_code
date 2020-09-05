@@ -60,4 +60,12 @@ public class OrderController {
         }
         return result;
     }
+
+    @RequestMapping("/findById")
+    public Result findById(Integer id){
+        log.debug("findById:" + id);
+        Map<String ,Object> map = orderService.findById(id);
+        log.debug("orderInfo:" + map);
+        return new Result(true,MessageConst.QUERY_ORDER_SUCCESS, map);
+    }
 }
