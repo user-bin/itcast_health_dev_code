@@ -24,4 +24,6 @@ public interface SetmealService {
      * @return
      */
     public Setmeal findDetailById(Integer id);
+
+    Setmeal findById(Integer id);
 }

@@ -40,4 +40,12 @@ public class SetmealController {
         log.debug(setmeal.toString());
         return new Result(true,MessageConst.QUERY_SETMEAL_SUCCESS,setmeal);
     }
+
+    @RequestMapping("/findById")
+    public Result findById(Integer id){
+        log.debug("findById:" +id);
+        Setmeal setmeal = setmealService.findById(id);
+        log.debug("setmeal：" + setmeal);
+        return new Result(true,MessageConst.QUERY_SETMEAL_SUCCESS, setmeal);
+    }
 }
