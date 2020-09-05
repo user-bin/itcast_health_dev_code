@@ -121,9 +121,14 @@
                             this.$message.error('请输入正确的手机号');
                             return false;
                         }
+                        //$("#validateCodeButton") jquery 对象， 一般都是一个数组
+                        //$("#validateCodeButton")[0]  获取数组中的第一个元素， 转换为dom对象
                         validateCodeButton = $("#validateCodeButton")[0];
+                        //window.setInterval(); 每隔多长时间执行 （无限循环)
+                        //window.setTimtout();  多长时间后执行一次
                         clock = window.setInterval(doLoop, 1000); //一秒执行一次
-                        axios.post("/validateCode/send4Order.do?telephone=" + telephone).then((response) => {
+                        // log4j  log for java ;  dom4j  dom for java
+                        axios.post(this.backend_url + "/validateCode/send4Order.do?telephone=" + telephone).then((response) => {
                             if(!response.data.flag){
                                 //验证码发送失败
                                 this.$message.error('验证码发送失败，请检查手机号输入是否正确');
@@ -160,7 +165,7 @@
             var calendar = new datePicker();
             calendar.init({
                 'trigger': '.picktime',/*按钮选择器，用于触发弹出插件*/
-                'type': 'date',/*模式：date日期；datetime日期时间；time时间；ym年月；*/
+                'type': 'date',/*模式：date日期；datetime日期时间；time时间；ym: 年月；*/
                 'minDate': getSpecifiedDate(new Date(),1),/*最小日期*/
                 'maxDate': getSpecifiedDate(new Date(),30),/*最大日期*/
                 'onSubmit': function() { /*确认时触发事件*/
