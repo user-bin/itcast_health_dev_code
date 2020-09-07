@@ -17,6 +17,8 @@
     <!--设置/favicon.ico 可以匿名访问 -->
     <security:http pattern="/favicon.ico" security="none"></security:http>
     <!--还需要设置：登录，失败 页面匿名方法-->
+    <security:http pattern="/pages/login.html" security="none"></security:http>
+    <security:http pattern="/pages/error.html" security="none"></security:http>
     <!--还需要设置：静态资源 匿名方法-->
 
 
@@ -32,6 +34,27 @@
             access: 允许的权限
         -->
         <security:intercept-url pattern="/**" access="ROLE_ADMIN"></security:intercept-url>
+
+        <!--配置自定义页面-->
+        <!--
+            login-page:登录页面路径
+            login-processing-url: 登录的请求路径(表单的action)
+            default-target-url: 登录成功后的默认访问路径
+            authentication-failure-url: 认证失败的访问路径'
+            username-parameter: 用户名参数名(映射表单)，默认值是 username
+            password-parameter： 密码参数名(映射表单), 默认值是 password
+        -->
+        <security:form-login
+                login-page="/pages/login.html"
+                login-processing-url="/login.do"
+                default-target-url="/pages/success.html"
+                authentication-failure-url="/pages/error.html"
+                username-parameter="username"
+                password-parameter="pwd"></security:form-login>
+
+        <!--关闭跨站请求伪造: 如果不关闭，登录会失败-->
+        <security:csrf disabled="true"></security:csrf>
+
     </security:http>
 
 
