@@ -85,7 +85,7 @@
                         this.$message.error('请输入正确的手机号');
                         return false;
                     }
-                    axios.post("//member/login.do",this.loginInfo).then((response) => {
+                    axios.post(this.backend_url + "/member/login.do",this.loginInfo).then((response) => {
                         if(response.data.flag){
                             //登录成功,跳转到index.html
                             window.location.href="index.html";
