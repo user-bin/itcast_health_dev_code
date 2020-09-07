@@ -64,6 +64,13 @@
         <!--关闭跨站请求伪造: 如果不关闭，登录会失败-->
         <security:csrf disabled="true"></security:csrf>
 
+        <!--配置登出功能-->
+        <!--
+            invalidate-session: 是否刷新session
+            logout-url: 登出的请求路径
+            logout-success-url: 登出后路径
+        -->
+        <security:logout invalidate-session="true" logout-url="/logout.do" logout-success-url="/pages/login.html"></security:logout>
     </security:http>
 
 
