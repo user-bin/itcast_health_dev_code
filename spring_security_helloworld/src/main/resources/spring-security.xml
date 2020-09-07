@@ -92,7 +92,11 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
-
+    <!--开启安全框架的注解支持-->
+    <!--
+        pre-post-annotations 允许使用@PreAuthorize和@PostAuthorize注解
+    -->
+    <security:global-method-security pre-post-annotations="enabled"></security:global-method-security>
     <!--创建加密工具类-->
     <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
 </beans>
