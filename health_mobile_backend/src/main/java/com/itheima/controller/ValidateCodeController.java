@@ -23,6 +23,25 @@ public class ValidateCodeController {
     @Reference
     ValidateCodeService validateCodeService;
 
+    /**
+     *  步骤
+     * 1. 生成验证码
+     * 2. 发送短信给用户，存储到redis
+     *
+     * @param telephone
+     * @return
+     */
+    @RequestMapping("/send4Login")
+    public Result send4Login(String telephone){
+        //生成验证码
+        Integer validateCode = ValidateCodeUtils.generateValidateCode(6);
+        log.debug("validateCode:" + validateCode);
+        validateCodeService.sendValidateCodeShortMessage(telephone, RedisMessageConstant.SENDTYPE_LOGIN, String.valueOf(validateCode));
+        log.debug("发送验证码成功！！");
+        return new Result(true,MessageConst.SEND_VALIDATECODE_SUCCESS);
+    }
+
+
 
     /**
      * 步骤
