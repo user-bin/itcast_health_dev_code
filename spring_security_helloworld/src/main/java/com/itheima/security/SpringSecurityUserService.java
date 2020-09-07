@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,13 +25,16 @@ public class SpringSecurityUserService implements UserDetailsService {
     private static Map<String,SysUser> db = new HashMap<>();
     //静态代码块
     static{
+        //创建加密工具类
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
         SysUser user1 = new SysUser();
         user1.setUsername("admin");
-        user1.setPassword("1234");
+        user1.setPassword(passwordEncoder.encode("1234"));
 
         SysUser user2 = new SysUser();
         user2.setUsername("xiaoming");
-        user2.setPassword("1234");
+        user2.setPassword(passwordEncoder.encode("1234"));
 
         // 添加到集合中
         db.put(user1.getUsername(), user1);
@@ -55,7 +59,7 @@ public class SpringSecurityUserService implements UserDetailsService {
         //把权限对象添加到集合中
         authorityList.add(grantedAuthority);
         //要求返回UserDetails ， 创建该对象
-        UserDetails userDetails = new User(sysUser.getUsername(), "{noop}"+sysUser.getPassword(),authorityList );
+        UserDetails userDetails = new User(sysUser.getUsername(), sysUser.getPassword(),authorityList );
         return userDetails;
     }
 

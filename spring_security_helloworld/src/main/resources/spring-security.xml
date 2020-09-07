@@ -69,6 +69,7 @@
                         必须实现UserDetailsService 接口
         -->
         <security:authentication-provider user-service-ref="userService">
+            <security:password-encoder ref="passwordEncoder"></security:password-encoder>
             <!--认证信息列表-->
             <!--<security:user-service>-->
                 <!--认证信息-->
@@ -82,4 +83,7 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
+
+    <!--创建加密工具类-->
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
 </beans>
