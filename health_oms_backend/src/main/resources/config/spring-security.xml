@@ -27,6 +27,8 @@
 
         <!--关闭跨站请求伪造-->
         <security:csrf disabled="true"></security:csrf>
+
+        <security:logout logout-url="/user/logout.do" logout-success-url="http://localhost:83/login.html" invalidate-session="true" ></security:logout>
     </security:http>
 
     <!--认证-->
