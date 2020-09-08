@@ -2,8 +2,7 @@ package com.itheima.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 /**
  * @author 黑马程序员
@@ -41,5 +40,29 @@ public class DateUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static List<String> getThisYearMonth(){
+        List<String> months = new ArrayList<>();
+        //当前日历对象
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -12);
+
+        for (int i = 0; i < 12; i++) {
+            //转换为date
+            Date date = calendar.getTime();
+            //转换为字符串
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+            String month = sdf.format(date);
+            months.add(month);
+
+            calendar.add(Calendar.MONTH, 1);
+        }
+
+        return months;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getThisYearMonth());
     }
 }

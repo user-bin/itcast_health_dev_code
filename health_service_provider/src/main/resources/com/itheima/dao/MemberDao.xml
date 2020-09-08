@@ -17,4 +17,9 @@
     <select id="findByTelephone" parameterType="string" resultType="member">
         select * from t_member where phoneNumber = #{phoneNumber}
     </select>
+
+
+    <select id="findBeforeByMonthLastDay" resultType="long" parameterType="date">
+        select count(0) from t_member where regTime &lt;= #{date}
+    </select>
 </mapper>

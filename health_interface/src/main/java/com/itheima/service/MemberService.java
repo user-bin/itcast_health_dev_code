@@ -2,6 +2,8 @@ package com.itheima.service;
 
 import com.itheima.pojo.Member;
 
+import java.util.Map;
+
 /**
  * @author 黑马程序员
  * @Company http://www.ithiema.com
@@ -10,4 +12,6 @@ import com.itheima.pojo.Member;
 public interface MemberService {
     public void add(Member member);
     public Member findByTelephone(String telephone);
+
+    Map<String,Object> getMemberReport();
 }
