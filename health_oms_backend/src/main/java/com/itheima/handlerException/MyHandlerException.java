@@ -6,6 +6,7 @@ import com.itheima.exception.BusinessRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -43,6 +44,23 @@ public class MyHandlerException {
         log.debug("BusinessRuntimeException:" + e);
         return new Result(false, e.getMessage());
     }
+
+    /**
+     * 处理手动抛出的运行时异常
+     *
+     * ExceptionHandler ： 在标记方法中要处理的异常 是谁
+     * @ResponseStatus: 响应的状态的码
+     *   HttpStatus.OK: 响应状态码为 200
+     * @param e
+     * @return
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler({AccessDeniedException.class})
+    public Result handlerBusinessAccessDeniedException(AccessDeniedException e){
+        log.debug("AccessDeniedException:" + e);
+        return new Result(false, "权限不足，请联系管理员!!!");
+    }
+
 
 
     /**

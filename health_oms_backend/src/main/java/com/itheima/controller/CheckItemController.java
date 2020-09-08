@@ -8,6 +8,7 @@ import com.itheima.entity.Result;
 import com.itheima.pojo.CheckItem;
 import com.itheima.service.CheckItemService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,7 @@ public class CheckItemController {
     private CheckItemService checkItemService;
 
     @RequestMapping("/add")
+    @PreAuthorize("hasAuthority('CHECKITEM_ADD')")
     public Result add(@RequestBody CheckItem checkItem){
         log.debug("controller:{"+checkItem+"}");
         checkItemService.add(checkItem);
@@ -41,6 +43,7 @@ public class CheckItemController {
      * @param queryPageBean
      * @return
      */
+    @PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
     @RequestMapping("/findPage")
     public Result findPage(@RequestBody QueryPageBean queryPageBean){
         log.debug("controller{"+queryPageBean+"}");
@@ -49,6 +52,7 @@ public class CheckItemController {
         return new Result(true, MessageConst.QUERY_CHECKITEM_SUCCESS, pageResult);
     }
 
+    @PreAuthorize("hasAuthority('CHECKITEM_DELETE')")
     @RequestMapping("/delById")
     public Result delById(Integer id){
         log.debug("CheckItemController:delete: " + id);
@@ -58,6 +62,7 @@ public class CheckItemController {
     }
 
     @RequestMapping("/findById")
+    @PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
     public Result findById(Integer id){
         log.debug("CheckItemController：findById:" + id);
         CheckItem checkItem = checkItemService.findById(id);
@@ -66,6 +71,7 @@ public class CheckItemController {
     }
 
     @RequestMapping("/edit")
+    @PreAuthorize("hasAuthority('CHECKITEM_EDIT')")
     public Result edit(@RequestBody CheckItem checkItem){
         log.debug("CheckItemController:edit: " + checkItem);
         checkItemService.edit(checkItem);
@@ -74,6 +80,7 @@ public class CheckItemController {
     }
 
     @RequestMapping("/findAll")
+    @PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
     public Result findAll(){
         log.debug("findAll");
         List<CheckItem> checkItemList = checkItemService.findAll();
