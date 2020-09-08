@@ -30,7 +30,7 @@ public class UserController {
 		ModelAndView modelAndView = new ModelAndView();
 //		forward: 请求转发
 //		redirect: 重定向
-		modelAndView.setViewName("redirect:http://localhost:83/login.html");
+		modelAndView.setViewName("redirect:http://localhost:83/login.html?message=loginFail");
 		return modelAndView;
 	}
 
