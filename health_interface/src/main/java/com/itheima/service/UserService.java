@@ -1,5 +1,7 @@
 package com.itheima.service;
 
+import com.itheima.pojo.SysUser;
+
 public interface UserService {
 	/**
 	 * 用户登录
@@ -8,4 +10,6 @@ public interface UserService {
 	 * @return
 	 */
 	boolean login(String username,String password);
+
+    SysUser findByUsername(String username);
 }

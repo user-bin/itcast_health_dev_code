@@ -53,9 +53,22 @@
         <qiniu.version>7.2.29</qiniu.version>
         <aliyun-java-sdk-core.version>4.5.0</aliyun-java-sdk-core.version>
         <httpclient.version>4.5.10</httpclient.version>
+        <!-- 注意提取版本号 -->
+        <spring.security.version>5.0.5.RELEASE</spring.security.version>
     </properties>
     <dependencyManagement>
         <dependencies>
+            <!--依赖管理-->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.qiniu</groupId>
                 <artifactId>qiniu-java-sdk</artifactId>

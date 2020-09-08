@@ -12,10 +12,22 @@
     <!--自动扫包-->
     <context:component-scan base-package="com.itheima.controller"/>
     <context:component-scan base-package="com.itheima.handlerException"/>
-    <!--支持跨域-->
+    <!--允许跨域来访问 -->
     <mvc:cors>
-        <mvc:mapping path="/**"/>
+        <mvc:mapping path="/**"
+                     allowed-origins="http://localhost:83,http://127.0.0.1:83"
+                     allowed-methods="GET, PUT,OPTIONS,POST,DELETE"
+                     allow-credentials="true"
+                     max-age="3600" />
     </mvc:cors>
+
+    <!--
+          浏览器会向所请求的服务器发起两次请求，第一次是浏览器使用OPTIONS方法发起一个预检请求，第二次才是真正的异步请求，第一次的预检请求获知服务器是否允许该跨域请求：如果允许，才发起第二次真实的请求；如果不允许，则拦截第二次请求。
+         allowed-origins： 允许的远程
+         allowed-methods: 允许的请求方式
+         max-age: 用来指定本次预检请求的有效期，单位为秒，在此期间不用发出另一条预检请求
+       allow-credentials: 请求是否带cookie信息
+    -->
     <!--注解驱动
     	当配置了mvc:annotation-driven/后，启用注解驱动。
     -->
