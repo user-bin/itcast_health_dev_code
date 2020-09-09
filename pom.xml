@@ -38,7 +38,7 @@
         <fastjson.version>1.2.47</fastjson.version>
         <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
         <dubbo.version>2.6.2</dubbo.version>
-        <zookeeper.version>3.4.13</zookeeper.version>
+        <zookeeper.version>3.4.14</zookeeper.version>
         <!--zookeeper 客户端-->
         <curator-framework.version>4.0.1</curator-framework.version>
         <!--操作redis的-->
