@@ -5,6 +5,9 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +19,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class POIUtils {
+
+
+    public static void writeCell(XSSFSheet sheet, Integer rownum , Integer cellnum , String value ){
+        //获取 行对象
+        XSSFRow row = sheet.getRow(rownum);
+        //获取单元格
+        XSSFCell cell = row.getCell(cellnum);
+        cell.setCellValue(value);
+    }
+
+
     private final static String xls = "xls";
     private final static String xlsx = "xlsx";
     private final static String DATE_FORMAT = "yyyy/MM/dd";
