@@ -21,4 +21,17 @@
     <select id="findCountBeforeByDate" parameterType="string" resultType="long">
         select count(0) from t_member where regTime &lt;= #{date}
     </select>
+
+
+    <select id="findTodayNewMember" parameterType="string" resultType="long">
+        select count(0) from t_member where regTime = #{date}
+    </select>
+
+    <select id="findTotalMember" resultType="long">
+        select count(0) from t_member
+    </select>
+
+    <select id="findCountAfterByDate" parameterType="string" resultType="long">
+        select count(0) from t_member where regTime &gt;= #{date}
+    </select>
 </mapper>

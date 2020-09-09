@@ -13,4 +13,12 @@ public interface MemberDao {
     void add(Member member);
 
     long findCountBeforeByDate(String lastDay);
+
+
+
+    long findTodayNewMember(String today);
+
+    long findTotalMember();
+
+    long findCountAfterByDate(String firstDay);
 }

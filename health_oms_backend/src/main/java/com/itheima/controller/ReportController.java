@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.constant.MessageConst;
 import com.itheima.entity.Result;
 import com.itheima.service.MemberService;
+import com.itheima.service.ReportService;
 import com.itheima.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,18 @@ public class ReportController {
 
     @Reference
     SetmealService setmealService;
+
+    @Reference
+    ReportService reportService;
+
+    @RequestMapping("/getBusinessReportData")
+    public Result getBusinessReportData(){
+        log.debug("getBusinessReportData");
+        Map<String,Object> map = reportService.getBusinessReportData();
+        log.debug("reportData:" + map);
+        return new Result(true,MessageConst.GET_BUSINESS_REPORT_SUCCESS, map);
+    }
+
 
     /**
      *
