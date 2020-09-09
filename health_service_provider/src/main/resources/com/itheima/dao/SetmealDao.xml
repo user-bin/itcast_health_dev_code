@@ -70,4 +70,7 @@
     </select>
 
 
+    <select id="getSetmealReport" resultType="map">
+      select count(o.id) value,s.name from t_setmeal s left join t_order o on s.id = o.setmeal_id GROUP BY s.id
+    </select>
 </mapper>

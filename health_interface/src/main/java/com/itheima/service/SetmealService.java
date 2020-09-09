@@ -5,6 +5,7 @@ import com.itheima.entity.QueryPageBean;
 import com.itheima.pojo.Setmeal;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 黑马程序员
@@ -26,4 +27,6 @@ public interface SetmealService {
     public Setmeal findDetailById(Integer id);
 
     Setmeal findById(Integer id);
+
+    List<Map<String,Object>> getSetmealReport();
 }

@@ -5,6 +5,7 @@ import com.itheima.pojo.Setmeal;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 黑马程序员
@@ -23,4 +24,6 @@ public interface SetmealDao {
     Setmeal findDetailsById(int id);
 
     Setmeal findById(Integer id);
+
+    List<Map<String,Object>> getSetmealReport();
 }
